@@ -4,15 +4,13 @@
         
     </head> 
         <body>
-            <input type="text" placeholder="Nome" name="nome">
-        
-            <input type="text" placeholder="email" name="email">
-            <input type="text" placeholder="senha" name="senha">
-            <input type="text" placeholder="Confirma senha" name="senha">
-
-            <input type="button" value="Cadastrar">
-
- 
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+                <input type="text" placeholder="Nome" name="username">
+                <br>
+                <input type="password" placeholder="senha" name="senha">
+                <br>
+                <input type="submit"value='Logar'>
+        </form>        
         </body>
-
 </html>
