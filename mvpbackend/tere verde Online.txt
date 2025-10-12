@@ -1,0 +1,39 @@
+tere verde Online
+
+Dores a serem resolvidas pela plataforma:
+
+integrar os parques da cidade, três picos, parque municipal montanhas e parque nacional serra dos orgãos
+
+promover as atrações que são as visitas, passeios por trilhas dos parques, demonstração da biodiversidade, cachoeiras e eventos dos três parques
+
+
+pontos chave:
+a população deve acessar as informações sobre os tres parques
+ter acesso a seus atrativos de forma eficiente e conveniente
+acessar a biodiversidade de cada parque
+
+atores
+administradores dos parques
+visitantes
+
+administrador deve
+gerir disponibilidade e horários de funcionamento de eventos e temporadas e atualizações de novidades para os parques
+
+
+
+requisito funcional
+disponibilidade 
+capacidade de acomodar um grande número de usuários simultâneos
+tempo de resposta 
+interface amigável e de fácil utilização
+segurança dos dados
+login administradores
+
+requisito não funcional
+
+
+
+
+
+
+
