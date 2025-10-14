@@ -11,9 +11,9 @@
                 <input type="password" placeholder="senha" name="senha">
                 <br>
                 <input type="submit"value='Logar'>
-
-             <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}   
+            
+        </form> 
+        <form action="{% url 'logout_view' %}" method="post" {% csrf_token %} input type="submit"value='Logout'>
         </form>        
         </body>
 </html>
