@@ -6,6 +6,18 @@ from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
+def teste(request):
+          return render(request, 'teste.html')
+
+def parques(request):
+          return render(request, 'parques.html')
+
+def trilhas(request):
+    return render(request, 'trilhas.html')
+
+def eventos(request):
+    return render(request, 'eventos.html')
+
 def cadastro (request):
     if request.method == 'GET':
         return render (request, 'cadastro.html')
@@ -39,7 +51,7 @@ def login (request):
 
 @login_required(login_url='/auth/login/')        
 def ingressos(request):
-      return HttpResponse('administrativo')
+      return HttpResponse('teste')
 
 
 def logout_view(request):
