@@ -11,8 +11,9 @@
 </head>
 <body>
     <header class="hero">
+        <div class="overlay"></div>
         <h1>CIRCUITO TERÊ VERDE</h1>
-        <nav>
+        <nav aria-label="Menu principal">
             <a href="{% url 'parques' %}">Parques</a>
             <a href="{% url 'trilhas' %}">Trilhas</a>
             <a href="{% url 'eventos' %}">Eventos</a>
@@ -20,21 +21,21 @@
     </header>
 
     <main>
-        <section class="welcome">
+        <section class="welcome container">
             <h2>Bem-vindo ao ecoturismo de Teresópolis</h2>
             <p>Explore trilhas, descubra a biodiversidade e participe de eventos nos parques da região.</p>
         </section>
 
-        <section class="featured-parks">
+        <section class="featured-parks container">
             <h3>Parques em destaque</h3>
             <div class="park-list">
                 {% for parque in parques %}
-                <div class="park-card">
-                    <img src="{{ parque.imagem.url }}" alt="Imagem do {{ parque.nome }}">
+                <article class="park-card">
+                    <img src="{% static 'ideia.png' %}"alt="Imagem do parque {{ parque.nome }}">
                     <h4>{{ parque.nome }}</h4>
                     <p>{{ parque.descricao }}</p>
                     <p><strong>Localização:</strong> {{ parque.localizacao }}</p>
-                </div>
+                </article>
                 {% empty %}
                 <p>Nenhum parque cadastrado ainda.</p>
                 {% endfor %}
@@ -43,7 +44,8 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 Circuito Terê Verde</p>
+        <p>&copy; 2025 Circuito Terê Verde — Desenvolvido com 💚 em Teresópolis</p>
     </footer>
+
 </body>
 </html>
