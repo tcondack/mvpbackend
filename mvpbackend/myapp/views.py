@@ -44,4 +44,4 @@ def ingressos(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('cadastro'))
+    return HttpResponseRedirect(reverse('index'))
