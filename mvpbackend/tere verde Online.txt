@@ -31,8 +31,31 @@ login administradores
 
 requisito não funcional
 
+parque
+    nome
+    descrição
+    localizalção
+    horário de funcionamento
+    taxa entrada
+    imagem exemplo
 
+trilhas 
+    herda =parque
+    nome
+    dificuldade
+    descrição
+    tamanho
+    imagem exemplo
 
+eventos 
+    nome
+    descrição
+    data incio
+    data fim 
+    horario incio
+    horario fim 
+    imagem exemplo
+    herda de parque
 
 
 
