@@ -1,6 +1,8 @@
 from django.db import models
+from djongo import models
 
 class Parque(models.Model):
+    _id = models.ObjectIdField(primary_key=True, db_column='_id')
     nome =models.CharField(max_length=120)
     descricao = models.TextField()
     localizacao = models.CharField(max_length=200)

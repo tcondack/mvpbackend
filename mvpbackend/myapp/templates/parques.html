@@ -1,0 +1,22 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<section class="featured-parks container">
+            <h3>Parques em destaque</h3>
+            <div class="park-list">
+                {% for parque in parques %}
+                <article class="park-card">
+                    {%if parque.imagem%}
+                        <img src="{{ parque.imagem.url }}"alt="Imagem do parque {{ parque.nome }}">
+                    {% endif %}
+                        <h4>{{ parque.nome }}</h4>
+                    <p>{{ parque.descricao }}</p>
+                    <p><strong>Localização:</strong> {{ parque.localizacao }}</p>
+                </article>
+                {% empty %}
+                <p>Nenhum parque cadastrado ainda.</p>
+                {% endfor %}
+            </div>
