@@ -45,7 +45,7 @@ def login (request):
 
         if user:
             login_django(request, user)
-            return HttpResponse ('autenticado')
+            return redirect ('/admin/')
         else:
             return HttpResponse('usuário ou senha inválidos')
 
