@@ -11,13 +11,16 @@ def teste(request):
           return render(request, 'teste.html')
 # Páginas públicas
 def parques(request):
-          return render(request, 'parques.html')
+    lista_parques = parque.objects.all()    
+    return render(request, 'parques.html',{'parques': lista_parques})
 
 def trilhas(request):
-    return render(request, 'trilhas.html')
+    lista_trilhas = trilhas.objects.all()
+    return render(request, 'trilhas.html',{'trilhas':lista_trilhas } )
 
 def eventos(request):
-    return render(request, 'eventos.html')
+    lista_eventos = eventos.object.all()
+    return render(request, 'eventos.html', {'eventos': lista_eventos})
 
 # Páginas de cadastro
 def cadastro (request):
