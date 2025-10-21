@@ -1,7 +1,7 @@
 # MVP DESENVOLVIMENTO BACKEND
 
 ## Índice
-- [Alunos](#aluno)
+- [Aluno](#aluno)
 - [Situação Escolhida](#situação-escolhida)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Instruções Adicionais](#instruções-adicionais)
