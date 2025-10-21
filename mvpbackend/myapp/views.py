@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.contrib import messages
 
 # Página de teste
 def teste(request):
@@ -30,6 +31,12 @@ def cadastro (request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         senha = request.POST.get('senha')
+        senha_confirmacao = request.POST.get('senha_confirmacao') # Captura o novo campo
+
+        # 1. Verificar se as senhas coincidem
+        if senha != senha_confirmacao:
+            messages.error(request, 'As senhas não coincidem.')
+            return redirect('cadastro')
 
         # Verifica se existe usuário com o mesmo nome              
         user = User.objects.filter(username=username).first()
