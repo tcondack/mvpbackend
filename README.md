@@ -1,10 +1,9 @@
 # MVP DESENVOLVIMENTO BACKEND
 
 ## Índice
-- [Alunos](#alunos)
+- [Alunos](#aluno)
 - [Situação Escolhida](#situação-escolhida)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Execução do MVP](#execução-do-mvp)
 - [Instruções Adicionais](#instruções-adicionais)
 - [Tipo de MVP](#tipo-de-mvp)
 - [Objetivos](#objetivos)
@@ -23,10 +22,6 @@
 - **HTML**
 - **CSS**
 - **JAVASCRIPT**
-
-## Execução do MVP
-Para executar o MVP temos duas opções:
->>> a ser implementado
 
 ## Objetivos
 Website que  melhore a relação do turista com o turismo ecológico na cidade de Teresópolis, unindo em uma plataforma simples e rápida imformações importantes a respeito dos parques existentes, suas programações, atrações e eventos.
