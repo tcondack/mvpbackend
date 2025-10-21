@@ -5,7 +5,6 @@
 - [Situação Escolhida](#situação-escolhida)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Instruções Adicionais](#instruções-adicionais)
-- [Tipo de MVP](#tipo-de-mvp)
 - [Objetivos](#objetivos)
 - [Público-alvo](#público-alvo)
 - [Os possíveis atores envolvidos](#os-possíveis-atores-envolvidos)
