@@ -44,7 +44,7 @@ def cadastro (request):
 # Login  usuário
 def login_view (request):
     if request.method == "GET":
-        return render (request, 'login.html')
+        return render (request, 'myapp/login.html')
     else:
         username = request.POST.get('username')
         senha = request.POST.get('senha')
