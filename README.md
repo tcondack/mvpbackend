@@ -4,7 +4,6 @@
 - [Aluno](#aluno)
 - [Situação Escolhida](#situação-escolhida)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Instruções Adicionais](#instruções-adicionais)
 - [Objetivos](#objetivos)
 - [Público-alvo](#público-alvo)
 - [Os possíveis atores envolvidos](#os-possíveis-atores-envolvidos)
