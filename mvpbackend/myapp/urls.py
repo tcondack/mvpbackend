@@ -6,10 +6,11 @@ urlpatterns = [
 
     #url administrativo
     path('cadastro/', views.cadastro, name='cadastro'),
-    path('login/', views.login, name='login'),
+    path('login/', views.login_view, name='login'),
     path('logout_view/', views.logout_view, name='logout_view'),
 
     #url públicas
+    path('index/', views.index, name='index'),
     path('parques/', views.parques, name='parques'),
     path('trilhas/', views.trilhas, name='trilhas'),
     path('eventos/', views.eventos, name='eventos'),

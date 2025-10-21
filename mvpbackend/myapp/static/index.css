@@ -2,22 +2,25 @@ body {
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f8f5;
-    color: #2e7d32;
+    background-color: #050c09;
+    color: #F0FFF0;
 }
 
 header.hero {
-    background-image: url('/static/img/hero.jpg');
+    background-image: url('/static/ideia.png');
     background-size: cover;
     background-position: center;
-    color: white;
+    color: rgb(99, 235, 8);
     text-align: center;
     padding: 60px 20px;
 }
-
+header.hero h1 {
+    /* 🟢 ADIÇÃO: Garante que o título se destaque sobre a imagem */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
 nav a {
     margin: 0 15px;
-    color: white;
+    color: #FFFFFF; 
     text-decoration: none;
     font-weight: bold;
 }

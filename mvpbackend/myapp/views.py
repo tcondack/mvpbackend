@@ -6,27 +6,32 @@ from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
+from .models import Parque, Trilhas, Eventos
 
 # Página de teste
 def teste(request):
-          return render(request, 'teste.html')
+          return render(request, 'myapp/teste.html')
 # Páginas públicas
+
+def index(request):
+    return render(request, 'myapp/index.html')
+
 def parques(request):
-    lista_parques = parque.objects.all()    
-    return render(request, 'parques.html',{'parques': lista_parques})
+    lista_parques = Parque.objects.all()    
+    return render(request, 'myapp/parques.html',{'parques': lista_parques})
 
 def trilhas(request):
-    lista_trilhas = trilhas.objects.all()
-    return render(request, 'trilhas.html',{'trilhas':lista_trilhas } )
+    lista_trilhas = Trilhas.objects.all()
+    return render(request, 'myapp/trilhas.html',{'trilhas':lista_trilhas } )
 
 def eventos(request):
-    lista_eventos = eventos.object.all()
-    return render(request, 'eventos.html', {'eventos': lista_eventos})
+    lista_eventos = Eventos.objects.all()
+    return render(request, 'myapp/eventos.html', {'eventos': lista_eventos})
 
 # Páginas de cadastro
 def cadastro (request):
     if request.method == 'GET':
-        return render (request, 'cadastro.html')
+        return render (request, 'myapp/cadastro.html')
     else:
         username = request.POST.get('username')
         email = request.POST.get('email')
