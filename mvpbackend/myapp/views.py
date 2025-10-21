@@ -55,7 +55,7 @@ def login_view (request):
             return HttpResponse('usuário ou senha inválidos')
 
 @login_required(login_url='/auth/login/')        
-def ingressos(request):
+def admin(request):
       return HttpResponse('Acesso liberado, Página protegida')
 
 
