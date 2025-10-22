@@ -1,26 +1,28 @@
 {% extends 'myapp/index.html' %}
-{% load static %}
-
-{% block title %}Eventos - Circuito Terê Verde{% endblock %}
+{% block title %}Login - Circuito Terê Verde{% endblock %}
 
 {% block content %}
-    <section class="eventos-list container">
-        <h2>Próximos eventos</h2>
-        {% for evento in eventos %}
-        <div class="evento-card">
-            <img src="{% if evento.imagem %}{{ evento.imagem.url }}{% else %}{% static 'evento_default.png' %}{% endif %}" alt="Imagem do evento {{ evento.nome }}">
-            <h3>{{ evento.nome }}</h3>
-            <p><strong>Parque:</strong> {{ evento.parque.nome }}</p>
-            <p><strong>Data:</strong> {{ evento.data_inicio|date:"d/m/Y H:i" }}</p>
-            <p>{{ evento.descricao }}</p>
-            {% if evento.preco %}
-            <p><strong>Preço:</strong> R$ {{ evento.preco|floatformat:2 }}</p>
-            {% else %}
-            <p>Evento gratuito.</p>
-            {% endif %}
-        </div>
-        {% empty %}
-        <p>Nenhum evento agendado.</p>
-        {% endfor %}
-    </section>
+<section class="auth-container container">
+    <h1>Login</h1>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <label for="username">Nome de Usuário:</label>
+        <input type="text" id="username" name="username" placeholder="Nome" required>
+
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" placeholder="senha" required>
+
+        <input type="submit" value="Entrar">
+        
+    </form>
+</section>
 {% endblock %}

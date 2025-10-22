@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect 
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as login_django
@@ -20,10 +20,10 @@ def parques(request):
     lista_parques = Parque.objects.all()    
     return render(request, 'myapp/parques.html',{'parques': lista_parques})
 
-def trilhas(request):
+def trilhas(request, parque_id):
+    parque = get_object_or_404(Parque, id=parque_id)
     lista_trilhas = Trilhas.objects.all()
-    return render(request, 'myapp/trilhas.html',{'trilhas':lista_trilhas } )
-
+    return render(request, 'myapp/trilhas.html', {'parque': parque, 'trilhas': lista_trilhas})
 def eventos(request):
     lista_eventos = Eventos.objects.all()
     return render(request, 'myapp/eventos.html', {'eventos': lista_eventos})
@@ -55,19 +55,18 @@ def cadastro (request):
 
 # Login  usuário
 def login_view (request):
-    if request.method == "GET":
-        return render (request, 'myapp/login.html')
-    else:
+    if request.method == "POST":
         username = request.POST.get('username')
-        senha = request.POST.get('senha')
-
+        senha = request.POST.get('password')
         user = authenticate(username=username, password=senha)
 
-        if user:
+        if user is not None and user.is_staff:
             login_django(request, user)
             return redirect ('/admin/')
         else:
-            return HttpResponse('usuário ou senha inválidos')
+            messages.error(request, 'Credenciais inválidas ou usuário sem permissão de acesso.')    
+            
+    return render(request, 'myapp/login.html')
 
 @login_required(login_url='/auth/login/')        
 def admin(request):

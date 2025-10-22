@@ -9,12 +9,12 @@
         <p>Explore trilhas, descubra a biodiversidade e participe de eventos nos parques da região.</p>
     </section>
 
-    <section class="featured-parks container">
-        <h3>Parques em destaque</h3>
-        <div class="park-list">
+    <section class="parques-container container">
+        <h1>Parques do Circuito Terê Verde</h1>
+        <div class="cards-grid">
             {% for parque in parques %}
-            <article class="park-card">
-                {% if parque.imagem %}
+            <a href="{% url 'trilhas' parque.id %}" class="park-card">               
+                 {% if parque.imagem %}
                     <img src="{{ parque.imagem.url }}" alt="Imagem do parque {{ parque.nome }}">
                 {% endif %}
                 <h4>{{ parque.nome }}</h4>

@@ -10,9 +10,9 @@ urlpatterns = [
     path('logout_view/', views.logout_view, name='logout_view'),
 
     #url públicas
-    path('index/', views.index, name='index'),
+    path('', views.index, name='index'),
     path('parques/', views.parques, name='parques'),
-    path('trilhas/', views.trilhas, name='trilhas'),
+    path('trilhas/<int:parque_id>/', views.trilhas, name='trilhas'),
     path('eventos/', views.eventos, name='eventos'),
 
 ]
