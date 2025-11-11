@@ -1,0 +1,15 @@
+# Ambiente virtual
+venv/
+ 
+# Arquivos compilados
+*.pyc
+__pycache__/
+
+# Diretório de migrações
+myapp/migrations/
+
+# Configurações locais
+*.env
+mvpbackend/mvpbackend/__pycache__/settings.cpython-313.pyc
+mvpbackend/myapp/__pycache__/urls.cpython-313.pyc
+mvpbackend/myapp/__pycache__/views.cpython-313.pyc

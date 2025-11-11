@@ -12,7 +12,7 @@ urlpatterns = [
     #url públicas
     path('', views.index, name='index'),
     path('parques/', views.parques, name='parques'),
-    path('trilhas/<int:parque_id>/', views.trilhas, name='trilhas'),
+    path('trilhas/', views.trilhas, name='trilhas'),
     path('eventos/', views.eventos, name='eventos'),
 
 ]
