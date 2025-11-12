@@ -15,9 +15,9 @@
 ## Situação Escolhida
 
 Parques da cidade de Teresópolis, para dar enfoque nas suas belezas naturais, diversidade de trilhas e eventos. Uma cidade envolvida em três Parques que vão proporcionar uma experiencia incrível para os amantes da natureza.
-O Parque Nacional da Serra dos Órgãos se destaca por ser um dos melhores locais do país para a prática de esportes de montanha, como escalada, caminhada, rapel e outros; além de ter fantásticas cachoeiras. 
-O Parque tem a maior rede de trilhas do Brasil., o Parque Municipal Montanhas de Teresópolis se destaca pelos pontos destinados a piquenique, trilhas incríveis, escaladas sensacioais, e acampamentos.
-o Parque Estadual dos Três Picos, um conjunto de montanhas graníticas, que oferecem trilhas, cachoeiras, áreas de lazer, inúmeros picos e montanhas e abrigam milhares de espécies.
+- Parque Nacional da Serra dos Órgãos se destaca por ser um dos melhores locais do país para a prática de esportes de montanha, como escalada, caminhada, rapel e outros; além de ter fantásticas cachoeiras. 
+- Parque tem a maior rede de trilhas do Brasil., o Parque Municipal Montanhas de Teresópolis se destaca pelos pontos destinados a piquenique, trilhas incríveis, escaladas sensacioais, e acampamentos.
+- Parque Estadual dos Três Picos, um conjunto de montanhas graníticas, que oferecem trilhas, cachoeiras, áreas de lazer, inúmeros picos e montanhas e abrigam milhares de espécies.
 
 ## Tecnologias Utilizadas
 - **Django**
