@@ -76,12 +76,8 @@ WSGI_APPLICATION = 'mvpbackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': "djongo",
-        'NAME': 'mvp_backend',
-    }
-}
+MONGO_URI = "mongodb://localhost:27017/"
+MONGO_DB_NAME = ""
 
 
 # Password validation
