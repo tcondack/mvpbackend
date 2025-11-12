@@ -1,4 +1,4 @@
-Django>=4.0
+Django>=5.2.7
 djangorestframework>=3.14
-djongo>=1.3.6
+djongo
 pillow>=10.0
