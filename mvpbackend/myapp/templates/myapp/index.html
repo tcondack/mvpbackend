@@ -1,38 +1,54 @@
+{% extends 'myapp/base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bloco para o título específico da página -->
-    <title>{% block title %}Circuito Terê Verde{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'index.css' %}">
-    <script src="{% static 'index.js' %}" type="text/javascript"></script>
-</head>
-<body>
-    <header class="hero">
-        <div class="overlay"></div>
-        <h1><a href="{% url 'index' %}">CIRCUITO TERÊ VERDE</a></h1>
-        <nav aria-label="Menu principal">
-            <a href="{% url 'parques' %}">Parques</a>
-            <a href="{% url 'trilhas' %}">Trilhas</a>
-            <a href="{% url 'eventos' %}">Eventos</a>
-            <!-- Links de Autenticação, se necessário -->
-            <a href="{% url 'login' %}">Login</a>
-        </nav>
-    </header>
+{% block title %}Circuito Terê Verde — Ecoturismo em Teresópolis{% endblock %}
 
-    <main>
-        <!-- ESTE É O BLOCO PRINCIPAL: Todo o conteúdo único de cada página entrará aqui -->
-        {% block content %}
-        
-        {% endblock %}
-    </main>
+{% block content %}
+<section class="intro container">
+    <h1>Bem-vindo ao Circuito Terê Verde 🌿</h1>
+    <p>
+        O <strong>Circuito Terê Verde</strong> é um projeto voltado ao ecoturismo e à preservação ambiental
+        nos parques e reservas naturais de Teresópolis. Descubra trilhas incríveis, participe de eventos
+        e explore a natureza de forma sustentável.
+    </p>
+</section>
 
-    <footer>
-        <p>&copy; 2025 Circuito Terê Verde — Desenvolvido com 💚 em Teresópolis</p>
-    </footer>
+<section class="destaques container">
+    <h2>Parques em destaque</h2>
+    <div class="cards-grid">
+        {% for parque in parques %}
+        <article class="card">
+            {% if parque.imagem %}
+            <img src="{{ parque.imagem.url }}" alt="{{ parque.nome }}">
+            {% endif %}
+            <h3>{{ parque.nome }}</h3>
+            <p>{{ parque.descricao|truncatewords:20 }}</p>
+        </article>
+        {% empty %}
+        <p>Nenhum parque cadastrado.</p>
+        {% endfor %}
+    </div>
+</section>
 
-</body>
-</html>
+<section class="destaques container">
+    <h2>Trilhas populares</h2>
+    <ul>
+        {% for trilha in trilhas %}
+        <li>{{ trilha.nome }} — {{ trilha.dificuldade }}</li>
+        {% empty %}
+        <li>Nenhuma trilha cadastrada.</li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="destaques container">
+    <h2>Próximos eventos</h2>
+    <ul>
+        {% for evento in eventos %}
+        <li>{{ evento.nome }} — {{ evento.data|date:"d/m/Y" }}</li>
+        {% empty %}
+        <li>Nenhum evento cadastrado.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

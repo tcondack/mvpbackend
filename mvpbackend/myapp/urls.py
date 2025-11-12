@@ -12,7 +12,6 @@ urlpatterns = [
     #url públicas
     path('', views.index, name='index'),
     path('parques/', views.parques, name='parques'),
-    path('parques/<str:parque_id>/', views.parques, name='parques'),
     path('trilhas/', views.trilhas, name='trilhas'),
     path('trilhas/<str:parque_id>/', views.trilhas, name='trilhas'),
     path('eventos/', views.eventos, name='eventos'),

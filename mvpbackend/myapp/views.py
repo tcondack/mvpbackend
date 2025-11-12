@@ -15,10 +15,20 @@ def teste(request):
 # Páginas públicas
 
 def index(request):
-    return render(request, 'myapp/index.html')
+    parques = Parque.objects.all()[:3]  # Mostra os 3 primeiros parques
+    trilhas = Trilhas.objects.all()[:3]  # Mostra 3 trilhas
+    eventos = Eventos.objects.all()[:3]  # Mostra 3 eventos
+
+    contexto = {
+        'parques': parques,
+        'trilhas': trilhas,
+        'eventos': eventos
+    }
+
+    return render(request, 'myapp/index.html', contexto)
 
 def parques(request):
-    parque = Parque.objects.all()
+    parques = Parque.objects.all()
     return render(request, 'myapp/parques.html',{'parques': parques})
 
 def trilhas(request, parque_id=None):
@@ -31,6 +41,7 @@ def eventos(request, parque_id=None):
     if parque_id:
         eventos = Eventos.objects.filter(parque_id=ObjectId(parque_id))
     else:
+        eventos = Eventos.objects.all()
         return render(request, 'myapp/eventos.html', {'eventos': eventos})
 
 # Páginas de cadastro

@@ -13,8 +13,8 @@
         <h1>Parques do Circuito Terê Verde</h1>
         <div class="cards-grid">
             {% for parque in parques %}
-            <a href="{% url 'parques' parque.id %}" class="park-card">               
-                 {% if parque.imagem %}
+            <a href="{% url 'parques' %}"> <class="park-card">
+                {% if parque.imagem %}
                     <img src="{{ parque.imagem.url }}" alt="Imagem do parque {{ parque.nome }}">
                 {% endif %}
                 <h4>{{ parque.nome }}</h4>
