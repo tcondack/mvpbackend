@@ -17,7 +17,12 @@ jobs:
     defaults:
       run:
         working-directory: ./mvpbackend
-
+    services:
+      mongo:
+        image: mongo:5
+        ports:
+          - 27017:27017
+          
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -28,7 +33,16 @@ jobs:
       run: |
         python -m venv venv
         source venv/bin/activate
+        pip install --upgrade pip
         pip install -r requirements.txt 
+
+    - name: Wait for MongoDB to be ready
+      run: |
+        for i in {1..15}; do
+          nc -z localhost 27017 && echo "MongoDB is up!" && break
+          echo "Waiting for MongoDB..."
+          sleep 3
+        done    
 
     - name: Run migrations
       run: |
