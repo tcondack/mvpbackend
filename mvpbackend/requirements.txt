@@ -1,5 +1,8 @@
 Django>=5.2.7
 djangorestframework>=3.14
-djongo
 pillow>=10.0
 django-jazzmin==2.6.0
+pytz==2025.x.x
+djongo==1.3.6
+
+
