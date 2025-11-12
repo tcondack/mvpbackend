@@ -2,7 +2,8 @@ Django>=5.2.7
 djangorestframework>=3.14
 pillow>=10.0
 django-jazzmin==2.6.0
-pymongo 4.15.4
+pymongo 4.15
+
 
 
 
