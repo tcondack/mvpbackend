@@ -35,7 +35,7 @@ jobs:
         source venv/bin/activate
         pip install --upgrade pip
         pip install -r requirements.txt 
-        pip install pymongo==3.12.3 sqlparse==0.2.4 Django>=3.2,<4.0
+        pip install pymongo==3.12.3 sqlparse==0.2.4 'Django>=3.2,<4.0'
 
     - name: Wait for MongoDB to be ready
       run: |

@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
 from .models import Parque, Trilhas, Eventos
+from bson import ObjectId
 
 # Página de teste
 def teste(request):
@@ -17,16 +18,20 @@ def index(request):
     return render(request, 'myapp/index.html')
 
 def parques(request):
-    lista_parques = Parque.objects.all()    
-    return render(request, 'myapp/parques.html',{'parques': lista_parques})
+    parque = Parque.objects.all()
+    return render(request, 'myapp/parques.html',{'parques': parques})
 
-def trilhas(request, parque_id):
-    parque = get_object_or_404(Parque, id=parque_id)
-    lista_trilhas = Trilhas.objects.all()
-    return render(request, 'myapp/trilhas.html', {'parque': parque, 'trilhas': lista_trilhas})
-def eventos(request):
-    lista_eventos = Eventos.objects.all()
-    return render(request, 'myapp/eventos.html', {'eventos': lista_eventos})
+def trilhas(request, parque_id=None):
+    if parque_id:
+        trilhas = Trilhas.objects.filter(parque_id=ObjectId(parque_id))
+    else:
+        lista_trilhas = Trilhas.objects.all()
+    return render(request, 'myapp/trilhas.html', {'parque': parques, 'trilhas': lista_trilhas})
+def eventos(request, parque_id=None):
+    if parque_id:
+        eventos = Eventos.objects.filter(parque_id=ObjectId(parque_id))
+    else:
+        return render(request, 'myapp/eventos.html', {'eventos': eventos})
 
 # Páginas de cadastro
 def cadastro (request):

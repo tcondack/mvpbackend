@@ -1,8 +1,9 @@
 from django.db import models
 from djongo import models
+from bson import ObjectId
 
 class Parque(models.Model):
-    _id = models.ObjectIdField(primary_key=True, db_column='_id')
+    _id = models.ObjectIdField(primary_key=True, default=ObjectId, db_column='_id')
     nome =models.CharField(max_length=120)
     descricao = models.TextField()
     localizacao = models.CharField(max_length=200)
@@ -13,7 +14,7 @@ class Parque(models.Model):
         return self.nome
 
 class Trilhas(models.Model):
-    parque = models.ForeignKey(Parque, on_delete=models.CASCADE, related_name='trilhas')
+    parque_id = models.ObjectIdField(primary_key=True, default=ObjectId, db_column='_id')
     nome = models.CharField(max_length=120)
     descricao = models.TextField()
     dificuldade = models.CharField(max_length=30, choices=[('Fácil', 'Fácil'), ('Médio', 'Médio'), ('Difícil', 'Difícil')])
@@ -23,7 +24,7 @@ class Trilhas(models.Model):
         return self.nome
 
 class Eventos(models.Model):
-    parque = models.ForeignKey(Parque, on_delete=models.CASCADE, related_name='eventos')
+    parque_id = models.ObjectIdField(primary_key=True, default=ObjectId, db_column='_id')
     nome = models.CharField(max_length=120)
     descricao = models.TextField()
     data_inicio = models.DateTimeField()
