@@ -16,9 +16,7 @@ def teste(request):
 
 def index(request):
     parques = Parque.objects.all()[:3]  # Mostra os 3 primeiros parques
-    trilhas = Trilhas.objects.all()[:3]  # Mostra 3 trilhas
-    eventos = Eventos.objects.all()[:3]  # Mostra 3 eventos
-
+   
     contexto = {
         'parques': parques,
         'trilhas': trilhas,

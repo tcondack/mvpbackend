@@ -33,3 +33,45 @@ class Eventos(models.Model):
     imagem = models.ImageField(upload_to='eventos/', null=True, blank=True)
     def __str__(self):
         return self.nome
+    
+class Disponibilidade(models.Model):
+    _id = models.ObjectIdField(primary_key=True, default=ObjectId, db_column='_id')
+    parque = models.ForeignKey(Parque, on_delete=models.CASCADE, related_name='disponibilidades')
+    dia_semana = models.CharField( max_length=20, 
+        choices=[
+            ('Segunda-feira', 'Segunda-feira'),
+            ('Terça-feira', 'Terça-feira'),
+            ('Quarta-feira', 'Quarta-feira'),
+            ('Quinta-feira', 'Quinta-feira'),
+            ('Sexta-feira', 'Sexta-feira'),
+            ('Sábado', 'Sábado'),
+            ('Domingo', 'Domingo'),
+        ])
+    horario_abertura = models.TimeField()
+    horario_fechamento = models.TimeField()
+    ativo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.parque.nome} - {self.dia_semana}"
+    
+class Temporada(models.Model):
+    _id = models.ObjectIdField(primary_key=True, default=ObjectId, db_column='_id')
+    parque = models.ForeignKey(Parque, on_delete=models.CASCADE, related_name='temporadas')
+    nome = models.CharField(max_length=100)
+    data_inicio = models.DateField()
+    data_fim = models.DateField()
+    descricao = models.TextField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.parque.nome} - {self.nome}"
+    
+class Novidades(models.Model):
+    _id = models.ObjectIdField(primary_key=True, default=ObjectId, db_column='_id')
+    parque = models.ForeignKey(Parque, on_delete=models.CASCADE, related_name='novidades')
+    titulo = models.CharField(max_length=150)
+    conteudo = models.TextField()
+    data_publicacao = models.DateTimeField(auto_now_add=True)
+    ativo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.parque.nome} - {self.titulo}"
