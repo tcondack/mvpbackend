@@ -45,3 +45,9 @@ Todos que possuem interesse no ecoturismo, desde moradores da cidade a turistas 
 >>> a ser implementado
 >>>
 >>> 
+
+
+## Execução do Projeto
+
+instalação do python
+
