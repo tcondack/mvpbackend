@@ -8,6 +8,10 @@
 - [Público-alvo](#público-alvo)
 - [Os possíveis atores envolvidos](#os-possíveis-atores-envolvidos)
 - [Protótipos](#protótipos)
+- [Execução do projeto](#Execução-do-Projeto)
+
+## Execução do Projeto
+
 
 ## Aluno
 - TIAGO EVARISTO CONDACK	
@@ -41,6 +45,8 @@ Todos que possuem interesse no ecoturismo, desde moradores da cidade a turistas 
 ## Os possíveis atores envolvidos
 - Administrador(a) do site, responsável pela inserção e exclusão de agendas, pela gestão de disponibilidae de parques e trilhas.
 - Usuários que terão acesso aos dados disponibilizados pela plataforma.
+
+
 ## Protótipos
 >>> a ser implementado
 >>>
