@@ -51,3 +51,15 @@ Todos que possuem interesse no ecoturismo, desde moradores da cidade a turistas 
 
 instalação do python
 
+Clonar github
+
+https://github.com/tcondack/mvpbackend
+
+Instalar dependencias 
+
+pip install -r requirements.txt
+
+rodar servidor
+
+python manage.py runserver
+
