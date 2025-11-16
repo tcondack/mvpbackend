@@ -10,9 +10,6 @@
 - [Protótipos](#protótipos)
 - [Execução do projeto](#Execução-do-Projeto)
 
-## Execução do Projeto
-
-
 ## Aluno
 - TIAGO EVARISTO CONDACK	
 
