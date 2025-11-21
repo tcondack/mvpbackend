@@ -1,0 +1,1215 @@
+Objetivos:
+
+    Criar e integrar APIs RESTful para operações CRUD em diferentes módulos do sistema.
+
+    Adotar práticas de DevOps, como CI/CD e gestão de pipelines, para automatizar o desenvolvimento e a entrega contínua do software.
+
+    Compreender a importância de dividir um sistema em módulos para facilitar a manutenção e escalabilidade.
+
+Introdução
+
+Neste material, exploramos a construção detalhada de um sistema Back-End voltado para a gestão de uma oficina mecânica, utilizando o framework Django e o banco de dados MongoDB. O projeto é estruturado em módulos, cada um responsável por uma parte específica do sistema, como o gerenciamento de clientes, veículos, ordens de serviço, funcionários e finanças. Através de uma descrição clara e detalhada das funcionalidades, acompanhada de exemplos de código para cada módulo, buscamos garantir uma compreensão completa do processo de desenvolvimento. Além disso, destacamos a importância da organização modular e da integração de práticas como DevOps para criar soluções eficazes, seguras e bem estruturadas, prontas para atender às demandas de um ambiente real de trabalho.
+
+Estrutura do Projeto
+
+O projeto será dividido em vários módulos para melhor organização e manutenção. Os módulos principais são:
+
+    Módulo de Clientes;
+
+    Módulo de Veículos;
+
+    Módulo de Ordens de Serviço;
+
+    Módulo de Funcionários;
+
+    Módulo Financeiro.
+
+1. Módulo de Clientes
+
+Objetivo: Gerenciar as informações dos clientes.
+
+Descrição: Este módulo é responsável por armazenar e gerenciar dados de clientes, como nome, email, telefone e endereço. Ele inclui modelos, serializers, views e testes para assegurar que as operações de CRUD (Create, Read, Update, Delete) sejam realizadas de forma eficiente e segura.
+
+Código:
+
+○ models.py: Define a estrutura dos dados do cliente no banco de dados.
+
+○ serializers.py: Serializa os dados para serem manipulados nas views.
+
+○ views.py: Implementa as operações de CRUD usando Django REST Framework.
+
+○ urls.py: Define as rotas para acessar as funcionalidades do módulo.
+
+○ tests.py: Garante a integridade das operações através de testes automatizados.
+
+Este módulo é essencial para o sistema, pois permite o registro e a gestão dos clientes, que são a base para a geração de ordens de serviço e outras operações.
+
+O models.py deve conter:
+
+from django.db import models
+
+
+class Cliente(models.Model):
+
+"""
+
+Modelo para armazenar informações dos clientes.
+
+"""
+
+nome = models.CharField(max_length=100)
+
+email = models.EmailField(unique=True)
+
+telefone = models.CharField(max_length=15)
+
+endereco = models.TextField()
+
+
+def __str__(self):
+
+return self.nome
+
+O serializers.py deve ser conforme:
+
+from rest_framework import serializers
+
+from .models import Cliente
+
+
+class ClienteSerializer(serializers.ModelSerializer):
+
+"""
+
+Serializer para o modelo Cliente.
+
+"""
+
+class Meta:
+
+model = Cliente
+
+fields = '__all__'
+
+O views.py deve ser:
+
+from rest_framework import generics, status
+
+from rest_framework.response import Response
+
+from .models import Cliente
+
+from .serializers import ClienteSerializer
+
+
+class ClienteListCreate(generics.ListCreateAPIView):
+
+"""
+
+View para listar e criar clientes.
+
+"""
+
+queryset = Cliente.objects.all()
+
+serializer_class = ClienteSerializer
+
+
+def create(self, request, *args, **kwargs):
+
+try:
+
+return super().create(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ClienteDetail(generics.RetrieveUpdateDestroyAPIView):
+
+"""
+
+View para recuperar, atualizar e deletar informações de um cliente.
+
+"""
+
+queryset = Cliente.objects.all()
+
+serializer_class = ClienteSerializer
+
+
+def update(self, request, *args, **kwargs):
+
+try:
+
+return super().update(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def destroy(self, request, *args, **kwargs):
+
+try:
+
+return super().destroy(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+O urls.py deve ter por conteúdo:
+
+from django.urls import path
+
+from .views import ClienteListCreate, ClienteDetail
+
+
+urlpatterns = [
+
+path('clientes/', ClienteListCreate.as_view(), name='cliente-list-create'),
+
+path('clientes/<int:pk>/', ClienteDetail.as_view(), name='cliente-detail'),
+
+]
+
+E o arquivo tests.py para este módulo deve conter:
+
+from django.test import TestCase
+
+from .models import Cliente
+
+
+class ClienteModelTest(TestCase):
+
+
+def setUp(self):
+
+self.cliente = Cliente.objects.create(
+
+nome="John Doe",
+
+email="john@example.com",
+
+telefone="123456789",
+
+endereco="123 Main St"
+
+)
+
+
+def test_cliente_creation(self):
+
+self.assertEqual(self.cliente.nome, "John Doe")
+
+self.assertEqual(self.cliente.email, "john@example.com")
+
+self.assertEqual(self.cliente.telefone, "123456789")
+
+self.assertEqual(self.cliente.endereco, "123 Main St")
+
+2. Módulo de Veículos
+
+Objetivo: Gerenciar as informações dos veículos dos clientes.
+
+Descrição: Este módulo permite o armazenamento e gerenciamento de dados dos veículos, vinculando cada veículo ao seu respectivo proprietário. As operações de CRUD aqui são fundamentais para associar os veículos às ordens de serviço.
+
+Código:
+
+○ models.py: Define a relação entre clientes e veículos.
+
+○ serializers.py: Serializa os dados dos veículos.
+
+○ views.py: Permite a criação, leitura, atualização e exclusão de registros de veículos.
+
+○ urls.py: Mapeia as rotas para o gerenciamento de veículos.
+
+○ tests.py: Assegura que as operações sobre os veículos sejam realizadas corretamente.
+
+Este módulo integra-se diretamente com o módulo de clientes, criando uma relação de dependência que reflete a estrutura real de uma oficina mecânica.
+
+Começando pelo models.py:
+
+from django.db import models
+
+from .models import Cliente
+
+
+class Veiculo(models.Model):
+
+"""
+
+Modelo para armazenar informações dos veículos.
+
+"""
+
+cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+
+marca = models.CharField(max_length=50)
+
+modelo = models.CharField(max_length=50)
+
+ano = models.IntegerField()
+
+placa = models.CharField(max_length=10)
+
+
+def __str__(self):
+
+return f'{self.marca} {self.modelo} - {self.placa}'
+
+O serializers.py deve conter:
+
+from rest_framework import serializers
+
+from .models import Veiculo
+
+
+class VeiculoSerializer(serializers.ModelSerializer):
+
+"""
+
+Serializer para o modelo Veiculo.
+
+"""
+
+class Meta:
+
+model = Veiculo
+
+fields = '__all__'
+
+O views.py deve possuir:
+
+from rest_framework import generics, status
+
+from rest_framework.response import Response
+
+from .models import Veiculo
+
+from .serializers import VeiculoSerializer
+
+
+class VeiculoListCreate(generics.ListCreateAPIView):
+
+"""
+
+View para listar e criar veículos.
+
+"""
+
+queryset = Veiculo.objects.all()
+
+serializer_class = VeiculoSerializer
+
+
+def create(self, request, *args, **kwargs):
+
+try:
+
+return super().create(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VeiculoDetail(generics.RetrieveUpdateDestroyAPIView):
+
+"""
+
+View para recuperar, atualizar e deletar informações de um veículo.
+
+"""
+
+queryset = Veiculo.objects.all()
+
+serializer_class = VeiculoSerializer
+
+
+def update(self, request, *args, **kwargs):
+
+try:
+
+return super().update(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def destroy(self, request, *args, **kwargs):
+
+try:
+
+return super().destroy(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+O urls.py será:
+
+from django.urls import path
+
+from .views import VeiculoListCreate, VeiculoDetail
+
+
+urlpatterns = [
+
+path('veiculos/', VeiculoListCreate.as_view(), name='veiculo-list-create'),
+
+path('veiculos/<int:pk>/', VeiculoDetail.as_view(), name='veiculo-detail'),
+
+]
+
+Por sua vez o tests.py deve ser acrescido de:
+
+from django.test import TestCase
+
+from .models import Cliente, Veiculo
+
+
+class VeiculoModelTest(TestCase):
+
+
+def setUp(self):
+
+self.cliente = Cliente.objects.create(
+
+nome="John Doe",
+
+email="john@example.com",
+
+telefone="123456789",
+
+endereco="123 Main St"
+
+)
+
+self.veiculo = Veiculo.objects.create(
+
+cliente=self.cliente,
+
+marca="Toyota",
+
+modelo="Corolla",
+
+ano=2020,
+
+placa="XYZ-1234"
+
+)
+
+
+def test_veiculo_creation(self):
+
+self.assertEqual(self.veiculo.cliente.nome, "John Doe")
+
+self.assertEqual(self.veiculo.marca, "Toyota")
+
+self.assertEqual(self.veiculo.modelo, "Corolla")
+
+self.assertEqual(self.veiculo.ano, 2020)
+
+self.assertEqual(self.veiculo.placa, "XYZ-1234")
+
+3. Módulo de Ordens de Serviço
+
+Objetivo: Gerenciar as ordens de serviço dos veículos.
+
+Descrição: Este módulo é central para o sistema, gerenciando as ordens de serviço que descrevem o trabalho a ser realizado em cada veículo. As operações de CRUD incluem a gestão de status das ordens, valores e datas, fundamentais para o controle operacional da oficina.
+
+Código:
+
+○ models.py: Define os atributos e status das ordens de serviço.
+
+○ serializers.py: Serializa as ordens de serviço para manipulação via API.
+
+○ views.py: Gerencia as operações de criação, leitura, atualização e exclusão de ordens de serviço.
+
+○ urls.py: Define as rotas para interações com as ordens de serviço.
+
+○ tests.py: Verifica a consistência e corretude das operações realizadas sobre as ordens de serviço.
+
+Este módulo é crítico, pois automatiza o processo de gestão de serviços, desde a criação até a conclusão das ordens, garantindo que todas as etapas sejam registradas e monitoradas.
+
+ 
+
+Como de costume iniciamos pelo models.py:
+
+from django.db import models
+
+from .models import Veiculo
+
+
+class OrdemServico(models.Model):
+
+"""
+
+Modelo para armazenar informações das ordens de serviço.
+
+"""
+
+veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
+
+descricao = models.TextField()
+
+data_entrada = models.DateField()
+
+data_saida = models.DateField(null=True, blank=True)
+
+valor_estimado = models.DecimalField(max_digits=10, decimal_places=2)
+
+status = models.CharField(max_length=20, choices=[('pendente', 'Pendente'), ('em andamento', 'Em Andamento'), ('concluido', 'Concluído')])
+
+
+def __str__(self):
+
+return f'Ordem de Serviço {self.id} - {self.veiculo.placa}'
+
+Em seguida apresentamos o código para o serializers.py:
+
+from rest_framework import serializers
+
+from .models import OrdemServico
+
+
+class OrdemServicoSerializer(serializers.ModelSerializer):
+
+"""
+
+Serializer para o modelo OrdemServico.
+
+"""
+
+class Meta:
+
+model = OrdemServico
+
+fields = '__all__'
+
+O views.py deve ser acrescido de:
+
+from rest_framework import generics, status
+
+from rest_framework.response import Response
+
+from .models import OrdemServico
+
+from .serializers import OrdemServicoSerializer
+
+
+class OrdemServicoListCreate(generics.ListCreateAPIView):
+
+"""
+
+View para listar e criar ordens de serviço.
+
+"""
+
+queryset = OrdemServico.objects.all()
+
+serializer_class = OrdemServicoSerializer
+
+
+def create(self, request, *args, **kwargs):
+
+try:
+
+return super().create(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrdemServicoDetail(generics.RetrieveUpdateDestroyAPIView):
+
+View para recuperar, atualizar e deletar ordens de serviço.
+
+queryset = OrdemServico.objects.all()
+
+serializer_class = OrdemServicoSerializer
+
+
+def update(self, request, *args, **kwargs):
+
+try:
+
+return super().update(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def destroy(self, request, *args, **kwargs):
+
+try:
+
+return super().destroy(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+As urls no urls.py serão:
+
+from django.urls import path
+
+from .views import OrdemServicoListCreate, OrdemServicoDetail
+
+
+urlpatterns = [
+
+path('ordensservico/', OrdemServicoListCreate.as_view(), name='ordemservico-list-create'),
+
+path('ordensservico/<int:pk>/', OrdemServicoDetail.as_view(), name='ordemservico-detail'),
+
+]
+
+Os testes para o tests.py:
+
+from django.test import TestCase
+
+from .models import Cliente, Veiculo, OrdemServico
+
+
+class OrdemServicoModelTest(TestCase):
+
+
+def setUp(self):
+
+self.cliente = Cliente.objects.create(
+
+nome="John Doe",
+
+email="john@example.com",
+
+telefone="123456789",
+
+endereco="123 Main St"
+
+)
+
+self.veiculo = Veiculo.objects.create(
+
+cliente=self.cliente,
+
+marca="Toyota",
+
+modelo="Corolla",
+
+ano=2020,
+
+placa="XYZ-1234"
+
+)
+
+self.ordem_servico = OrdemServico.objects.create(
+
+veiculo=self.veiculo,
+
+descricao="Troca de óleo",
+
+data_entrada="2023-07-01",
+
+valor_estimado=150.00,
+
+status="pendente"
+
+)
+
+
+def test_ordem_servico_creation(self):
+
+self.assertEqual(self.ordem_servico.veiculo.placa, "XYZ-1234")
+
+self.assertEqual(self.ordem_servico.descricao, "Troca de óleo")
+
+self.assertEqual(self.ordem_servico.data_entrada, "2023-07-01")
+
+self.assertEqual(self.ordem_servico.valor_estimado, 150.00)
+
+self.assertEqual(self.ordem_servico.status, "pendente")
+
+4. Módulo de Funcionários
+
+Objetivo: Gerenciar as informações dos funcionários da oficina.
+
+Descrição: Este módulo é responsável por armazenar e gerenciar dados dos funcionários, incluindo informações pessoais, cargo, salário e datas de contratação. A gestão eficiente dos funcionários é essencial para manter a operação da oficina organizada e produtiva.
+
+Código:
+
+○ models.py: Armazena os dados dos funcionários.
+
+○ serializers.py: Serializa os dados dos funcionários para uso nas views.
+
+○ views.py: Implementa as operações de CRUD sobre os registros de funcionários.
+
+○ urls.py: Configura as rotas para o gerenciamento de funcionários.
+
+○ tests.py: Realiza testes para garantir a funcionalidade do módulo.
+
+Este módulo integra-se com outros módulos, como o de ordens de serviço, para associar tarefas específicas aos funcionários responsáveis.
+
+ 
+
+O models.py deve conter:
+
+from django.db import models
+
+
+class Funcionario(models.Model):
+
+"""
+
+Modelo para armazenar informações dos funcionários.
+
+"""
+
+nome = models.CharField(max_length=100)
+
+email = models.EmailField(unique=True)
+
+telefone = models.CharField(max_length=15)
+
+cargo = models.CharField(max_length=50)
+
+salario = models.DecimalField(max_digits=10, decimal_places=2)
+
+data_contratacao = models.DateField()
+
+
+def __str__(self):
+
+return self.nome
+
+O serializers.py deve ter:
+
+from rest_framework import serializers
+
+from .models import Funcionario
+
+
+class FuncionarioSerializer(serializers.ModelSerializer):
+
+"""
+
+Serializer para o modelo Funcionario.
+
+"""
+
+class Meta:
+
+model = Funcionari
+
+fields = '__all__'
+
+O views.py deve ser acrescido de:
+
+from rest_framework import generics, status
+
+from rest_framework.response import Response
+
+from .models import Funcionario
+
+from .serializers import FuncionarioSerializer
+
+
+class FuncionarioListCreate(generics.ListCreateAPIView):
+
+"""
+
+View para listar e criar funcionários.
+
+"""
+
+queryset = Funcionario.objects.all()
+
+serializer_class = FuncionarioSerializer
+
+
+def create(self, request, *args, **kwargs):
+
+try:
+
+return super().create(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FuncionarioDetail(generics.RetrieveUpdateDestroyAPIView):
+
+"""
+
+View para recuperar, atualizar e deletar informações de um funcionário.
+
+"""
+
+queryset = Funcionario.objects.all()
+
+serializer_class = FuncionarioSerializer
+
+
+def update(self, request, *args, **kwargs):
+
+try:
+
+return super().update(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def destroy(self, request, *args, **kwargs):
+
+try:
+
+return super().destroy(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+O urls.py deve ser acrescido de:
+
+from django.urls import path
+
+from .views import FuncionarioListCreate, FuncionarioDetail
+
+
+urlpatterns = [
+
+path('funcionarios/', FuncionarioListCreate.as_view(), name='funcionario-list-create'),
+
+path('funcionarios/<int:pk>/', FuncionarioDetail.as_view(), name='funcionario-detail'),
+
+]
+
+Os testes no test.py serão:
+
+from django.test import TestCase
+
+from .models import Funcionario
+
+
+class FuncionarioModelTest(TestCase):
+
+
+def setUp(self):
+
+self.funcionario = Funcionario.objects.create(
+
+nome="Jane Smith",
+
+email="jane.smith@example.com",
+
+telefone="987654321",
+
+cargo="Mecânico",
+
+salario=3000.00,
+
+data_contratacao="2023-01-01"
+
+)
+
+
+def test_funcionario_creation(self):
+
+self.assertEqual(self.funcionario.nome, "Jane Smith")
+
+self.assertEqual(self.funcionario.email, "jane.smith@example.com")
+
+self.assertEqual(self.funcionario.telefone, "987654321")
+
+self.assertEqual(self.funcionario.cargo, "Mecânico")
+
+self.assertEqual(self.funcionario.salario, 3000.00)
+
+self.assertEqual(self.funcionario.data_contratacao, "2023-01-01")
+
+5. Módulo Financeiro
+
+Objetivo: Gerenciar as finanças da oficina, incluindo pagamentos e despesas.
+
+Descrição: Este módulo permite o controle financeiro da oficina, registrando todas as entradas (pagamentos) e saídas (despesas). Ele é crucial para a saúde financeira da empresa, permitindo um acompanhamento preciso e detalhado das finanças.
+
+Código:
+
+○ models.py: Define a estrutura de dados para pagamentos e despesas.
+
+○ serializers.py: Serializa esses dados para a interface API.
+
+○ views.py: Gerencia as operações financeiras, garantindo que todos os registros sejam precisos e atualizados.
+
+○ urls.py: Mapeia as rotas para o gerenciamento financeiro.
+
+○ tests.py: Testa a robustez e confiabilidade das operações financeiras.
+
+Este módulo é vital para garantir que todas as transações financeiras sejam registradas e monitoradas, fornecendo insights importantes para a tomada de decisões.
+
+ 
+
+Os modelos do models.py devem ser:
+
+from django.db import models
+
+
+class Pagamento(models.Model):
+
+"""
+
+Modelo para armazenar informações dos pagamentos.
+
+"""
+
+descricao = models.TextField()
+
+valor = models.DecimalField(max_digits=10, decimal_places=2)
+
+data_pagamento = models.DateField()
+
+
+def __str__(self):
+
+return f'Pagamento {self.id} - {self.valor}'
+
+
+class Despesa(models.Model):
+
+"""
+
+Modelo para armazenar informações das despesas.
+
+"""
+
+descricao = models.TextField()
+
+valor = models.DecimalField(max_digits=10, decimal_places=2)
+
+data_despesa = models.DateField()
+
+
+def __str__(self):
+
+return f'Despesa {self.id} - {self.valor}'
+
+
+O serializers.py deve ser acrescido de:
+
+
+from rest_framework import serializers
+
+from .models import Pagamento, Despesa
+
+
+class PagamentoSerializer(serializers.ModelSerializer):
+
+"""
+
+Serializer para o modelo Pagamento.
+
+"""
+
+class Meta:
+
+model = Pagamento
+
+fields = '__all__'
+
+
+class DespesaSerializer(serializers.ModelSerializer):
+
+"""
+
+Serializer para o modelo Despesa.
+
+"""
+
+class Meta:
+
+model = Despesa
+
+fields = '__all__'
+
+Os views do views.py:
+
+from rest_framework import generics, status
+
+from rest_framework.response import Response
+
+from .models import Pagamento, Despesa
+
+from .serializers import PagamentoSerializer, DespesaSerializer
+
+
+class PagamentoListCreate(generics.ListCreateAPIView):
+
+"""
+
+View para listar e criar pagamentos.
+
+"""
+
+queryset = Pagamento.objects.all()
+
+serializer_class = PagamentoSerializer
+
+
+def create(self, request, *args, **kwargs):
+
+try:
+
+return super().create(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PagamentoDetail(generics.RetrieveUpdateDestroyAPIView):
+
+"""
+
+View para recuperar, atualizar e deletar informações de um pagamento.
+
+"""
+
+queryset = Pagamento.objects.all()
+
+serializer_class = PagamentoSerializer
+
+
+def update(self, request, *args, **kwargs):
+
+try:
+
+return super().update(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def destroy(self, request, *args, **kwargs):
+
+try:
+
+return super().destroy(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DespesaListCreate(generics.ListCreateAPIView):
+
+"""
+
+View para listar e criar despesas.
+
+"""
+
+queryset = Despesa.objects.all()
+
+serializer_class = DespesaSerializer
+
+
+def create(self, request, *args, **kwargs):
+
+try:
+
+return super().create(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DespesaDetail(generics.RetrieveUpdateDestroyAPIView):
+
+"""
+
+View para recuperar, atualizar e deletar informações de uma despesa.
+
+"""
+
+queryset = Despesa.objects.all()
+
+serializer_class = DespesaSerializer
+
+
+def update(self, request, *args, **kwargs):
+
+try:
+
+return super().update(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def destroy(self, request, *args, **kwargs):
+
+try:
+
+return super().destroy(request, *args, **kwargs)
+
+except Exception as e:
+
+return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+O urls.py deverá ser:
+
+from django.urls import path
+
+from .views import PagamentoListCreate, PagamentoDetail, DespesaListCreate, DespesaDetail
+
+
+urlpatterns = [
+
+path('pagamentos/', PagamentoListCreate.as_view(), name='pagamento-list-create'),
+
+path('pagamentos/<int:pk>/', PagamentoDetail.as_view(), name='pagamento-detail'),
+
+path('despesas/', DespesaListCreate.as_view(), name='despesa-list-create'),
+
+path('despesas/<int:pk>/', DespesaDetail.as_view(), name='despesa-detail'),
+
+]
+
+E o test.py:
+
+from django.test import TestCase
+
+from .models import Pagamento, Despesa
+
+
+class PagamentoModelTest(TestCase):
+
+
+def setUp(self):
+
+self.pagamento = Pagamento.objects.create(
+
+descricao="Pagamento de serviço",
+
+valor=500.00,
+
+data_pagamento="2023-07-01"
+
+)
+
+
+def test_pagamento_creation(self):
+
+self.assertEqual(self.pagamento.descricao, "Pagamento de serviço")
+
+self.assertEqual(self.pagamento.valor, 500.00)
+
+self.assertEqual(self.pagamento.data_pagamento, "2023-07-01")
+
+
+class DespesaModelTest(TestCase):
+
+
+def setUp(self):
+
+self.despesa = Despesa.objects.create(
+
+descricao="Compra de peças",
+
+valor=200.00,
+
+data_despesa="2023-07-01"
+
+)
+
+
+def test_despesa_creation(self):
+
+self.assertEqual(self.despesa.descricao, "Compra de peças")
+
+self.assertEqual(self.despesa.valor, 200.00)
+
+self.assertEqual(self.despesa.data_despesa, "2023-07-01")
+
+Configuração Geral
+
+Após a definição dos módulos, é essencial configurar o ambiente de desenvolvimento para garantir que tudo funcione conforme o planejado.
+
+Adição das dependências:
+
+○ rest_framework e djongo são adicionados às INSTALLED_APPS para habilitar a integração com Django e MongoDB.
+
+○ O banco de dados é configurado para usar MongoDB, facilitando a gestão de grandes volumes de dados não-relacionais.
+
+Configuração de URLs:
+
+○ As URLs dos módulos são incluídas no arquivo principal de URLs do projeto (myproject/urls.py), permitindo o acesso centralizado a todas as funcionalidades da API.
+
+Exemplo de como deve ficar o INSTALLED_APPS
+
+INSTALLED_APPS = [
+
+...
+
+'rest_framework',
+
+'djongo',
+
+'myapp',
+
+]
+
+Configure o banco de dados para usar o MongoDB:
+
+DATABASES = {
+
+'default': {
+
+'ENGINE': 'djongo',
+
+'NAME': 'oficina_mecanica',
+
+}
+
+}
+
+Inclua as URLs das apps no arquivo de URLs do projeto, myproject/urls.py:
+
+from django.contrib import admin
+
+from django.urls import path, include
+
+
+urlpatterns = [
+
+path('admin/', admin.site.urls),
+
+path('api/', include('myapp.urls')),
+
+]
+
+Finalização
+
+Para finalizar, após a configuração de todos os módulos, você deve criar as migrações e iniciar o servidor de desenvolvimento para testar a aplicação.
+
+python manage.py makemigrations
+
+python manage.py migrate
+
+python manage.py runserver
+
+Interação com a API: A aplicação pode ser acessada e testada via API, garantindo que todas as operações funcionem como esperado:
+
+          Acesse http://127.0.0.1:8000/api/ no navegador para interagir com a API.
