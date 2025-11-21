@@ -13,9 +13,3 @@ myapp/migrations/
 mvpbackend/mvpbackend/__pycache__/settings.cpython-313.pyc
 mvpbackend/myapp/__pycache__/urls.cpython-313.pyc
 mvpbackend/myapp/__pycache__/views.cpython-313.pyc
-mvpbackend/myapp/__pycache__/models.cpython-313.pyc
-mvpbackend/myapp/__pycache__/models.cpython-313.pyc
-mvpbackend/myapp/migrations/__pycache__/__init__.cpython-313.pyc
-mvpbackend/myapp/migrations/__pycache__/0001_initial.cpython-313.pyc
-mvpbackend/myapp/__pycache__/views.cpython-313.pyc
-mvpbackend/myapp/__pycache__/urls.cpython-313.pyc
