@@ -4,9 +4,19 @@ class Parque(models.Model):
     nome =models.CharField(max_length=120)
     descricao = models.TextField()
     localizacao = models.TextField(max_length=200)
-    horario_funcionamento = models.CharField(max_length=100)
     taxa_entrada = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     imagem = models.ImageField(upload_to='parques/', null=True, blank=True)
+    horario_funcionamento = models.CharField(max_length=100)
+    dia_semana = models.CharField( max_length=20, 
+        choices=[
+            ('Segunda-feira', 'Segunda-feira'),
+            ('Terça-feira', 'Terça-feira'),
+            ('Quarta-feira', 'Quarta-feira'),
+            ('Quinta-feira', 'Quinta-feira'),
+            ('Sexta-feira', 'Sexta-feira'),
+            ('Sábado', 'Sábado'),
+            ('Domingo', 'Domingo'),
+        ])
     ativo = models.BooleanField(default=True)
     def __str__(self):
         return self.nome
@@ -17,6 +27,8 @@ class Trilhas(models.Model):
     descricao = models.TextField()
     dificuldade = models.CharField(max_length=30, choices=[('Fácil', 'Fácil'), ('Médio', 'Médio'), ('Difícil', 'Difícil')])
     distancia = models.DecimalField(max_digits=8, decimal_places=2)
+    data_inicio = models.DateField()
+    data_fim = models.DateField()
     imagem = models.ImageField(upload_to='trilhas/', null=True, blank=True)
     ativo = models.BooleanField(default=True)
     def __str__(self):
@@ -33,35 +45,7 @@ class Eventos(models.Model):
     ativo = models.BooleanField(default=True)
     def __str__(self):
         return self.nome
-    
-class Disponibilidade(models.Model):
-    parque = models.ForeignKey(Parque, on_delete=models.CASCADE)
-    dia_semana = models.CharField( max_length=20, 
-        choices=[
-            ('Segunda-feira', 'Segunda-feira'),
-            ('Terça-feira', 'Terça-feira'),
-            ('Quarta-feira', 'Quarta-feira'),
-            ('Quinta-feira', 'Quinta-feira'),
-            ('Sexta-feira', 'Sexta-feira'),
-            ('Sábado', 'Sábado'),
-            ('Domingo', 'Domingo'),
-        ])
-    horario_abertura = models.TimeField()
-    horario_fechamento = models.TimeField()
-    ativo = models.BooleanField(default=True)
-    def __str__(self):
-        return f"{self.parque.nome} - {self.dia_semana}"
-    
-class Temporada(models.Model):
-    parque = models.ForeignKey(Parque, on_delete=models.CASCADE)
-    nome = models.CharField(max_length=100)
-    data_inicio = models.DateField()
-    data_fim = models.DateField()
-    descricao = models.TextField(null=True, blank=True)
-    ativo = models.BooleanField(default=True)
-    def __str__(self):
-        return f"{self.parque.nome} - {self.nome}"
-    
+        
 class Novidades(models.Model):
     parque = models.ForeignKey(Parque, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=150)
